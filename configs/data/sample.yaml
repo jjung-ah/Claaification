@@ -1,0 +1,22 @@
+datasets:
+  factory_name: GoroDataset
+  train:
+    - /workspace/jjung/classification-model-v1/configs/data/datasets/data_01.yaml
+  val:
+    - /workspace/jjung/classification-model-v1/configs/data/datasets/data_03.yaml
+
+transforms:
+  GOSResize:
+    width: 224
+    height: 224
+  GOSRandomHFlip:
+    prob: 0.5
+  GOSNormalize:
+    mean:
+      - 0.5
+      - 0.5
+      - 0.5
+    std:
+      - 1.0
+      - 1.0
+      - 1.0

@@ -1,0 +1,9 @@
+hydra:
+  run:
+    dir: ${mode.output_dir}
+defaults:
+  - _self_
+  - data: sample
+  - meta_arch:
+      - model
+  - mode: train_sample

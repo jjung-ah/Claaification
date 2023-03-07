@@ -1,0 +1,4 @@
+criterion:
+  name: MultiLossFusion
+  parameters:
+    size_average: True

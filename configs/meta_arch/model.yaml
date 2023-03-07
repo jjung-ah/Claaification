@@ -1,0 +1,11 @@
+trainer:
+  factory_name: DefaultTrainer
+  model:
+    name: ResNet  # ISNetDIS
+    digit: full  # indicates "half" or "full" accuracy of float number.
+
+tester:
+  factory_name: DefaultTester
+  model:
+    name: ResNet  # ISNetDIS
+    digit: full  # indicates "half" or "full" accuracy of float number.

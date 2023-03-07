@@ -1,0 +1,6 @@
+name: data_03
+img_dir: /mnt/hdd1/datasets/hyundai-steel-goro/datasets/02_inspected_datasets/val
+img_ext:
+  - jpg
+  - png
+

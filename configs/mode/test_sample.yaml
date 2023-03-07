@@ -1,0 +1,2 @@
+mode: test
+interm_sup: False  # in-dicate if activate intermediate feature supervision.
