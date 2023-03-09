@@ -4,9 +4,15 @@ from collections import defaultdict
 from torch.utils.data import DataLoader
 
 from utils.types import Dictconfigs
-from architecture.data.datasets import DATASETS_REGISTRY
+from architecture.data.datasets.goro import GoroDataset
+# from architecture.data.datasets import DATASETS_REGISTRY
 from .utils import load_yaml, get_all_items  #, get_label_items
 from .transforms.build import build_train_transforms, build_val_transforms
+
+
+
+# def collate_fn(batch):
+#     return tuple(zip(*batch))
 
 
 def build_dataloader(configs: Dictconfigs, train: bool):
@@ -39,15 +45,17 @@ def build_dataloader(configs: Dictconfigs, train: bool):
             idx += 1
 
     # (3) call datasets.
-    factory_name = data_configs.datasets.factory_name
-    datasets = DATASETS_REGISTRY.get(factory_name)(datasets_dict, transform=transform)
+    datasets = GoroDataset(datasets_dict, transform=transform)
+    # factory_name = data_configs.datasets.factory_name
+    # datasets = DATASETS_REGISTRY.get(factory_name)(datasets_dict, transform=transform
     # val_datasets = DATASETS_REGISTRY.get(factory_name)(datasets_dict, transform=val_transform)
 
     # (4) call data-loader.
     batch_size = configs.mode.solver.batch_train if train else configs.mode.solver.batch_val
     num_workers = 8 if batch_size > 8 else 4 if batch_size > 4 else 1
+    # num_workers = 0
     dataloader = DataLoader(datasets, batch_size=batch_size, shuffle=True,
-                             num_workers=num_workers)  # shuffle=True : train
+                             num_workers=num_workers, drop_last=True)  # shuffle=True : train
     # valloader = DataLoader(val_datasets, batch_size=batch_size, shuffle=False,
     #                         num_workers=num_workers)  # shuffle=False : val
     return dataloader

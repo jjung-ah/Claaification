@@ -2,7 +2,6 @@ mode: train
 seed: 0
 interm_sup: False  # not-use.
 
-
 solver:
   start_iter: 0
   early_stop: 20
@@ -17,4 +16,4 @@ mp:
   num_gpus: 1
 
 #output_dir: /mnt/hdd/datasets/ulsan3-crack-poc/6_tmp/4_results/1st_test
-output_dir: //mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/1st
+output_dir: /mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/1st

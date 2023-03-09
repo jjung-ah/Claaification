@@ -64,8 +64,9 @@ class SupervisedLearning():
             running_loss = 0.0
 
             for data in self.trainloader:
-
-                inputs, labels = data[0].to(self.device), data[1].to(self.device)
+                print(data)
+                # inputs, labels = data[0].to(self.device), data[1].to(self.device)
+                inputs, labels = data['img'].to(self.device), data['gt'].to(self.device)
                 optimizer.zero_grad()
                 outputs = self.model(inputs)
                 trainloss = self.criterion(outputs, labels)

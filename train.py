@@ -28,7 +28,8 @@ def setting_cfgs(configs: Dictconfigs) -> Dictconfigs:
     if torch.cuda.is_available():
         configs.mode.mp.device = 'cuda'
         # todo : gpu 수량을 전부 사용하고 싶지 않은 경우는 ?
-        configs.mode.mp.num_gpus = torch.cuda.device_count()
+        # configs.mode.mp.num_gpus = torch.cuda.device_count()
+        configs.mode.mp.num_gpus = 1
     else:
         configs.mode.mp.device = 'cpu'
         configs.mode.mp.num_gpus = 0
