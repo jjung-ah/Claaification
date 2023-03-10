@@ -20,8 +20,8 @@ def fix_seed(seed: int) -> None:
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.benchmark = False
-    # torch.backends.cudnn.deterministic = True
-    torch.use_deterministic_algorithms(True)
+    torch.backends.cudnn.deterministic = True
+    # torch.use_deterministic_algorithms(True)
     os.environ["PYTHONHASHSEED"] = str(seed)
 
 
@@ -44,6 +44,7 @@ def setting_cfgs(configs: Dictconfigs) -> Dictconfigs:
 
 def main(configs: Dictconfigs) -> None:
     configs = setting_cfgs(configs)
+    torch.multiprocessing.set_start_method('spawn')
 
     # 데이터 불러오기
     trainloader = build_dataloader(configs, train=True)

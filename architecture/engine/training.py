@@ -96,20 +96,20 @@ class SupervisedLearning():
                 print(f'Epoch {epoch}, Train Loss: {train_cost}, Validation Loss: {val_cost}')
                 if epoch != 0:
                     torch.save(self.model.state_dict(),
-                               os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/2nd',
+                               os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd',
                                             f'{self.model_name}_{epoch}.pth'))
 
             if val_cost <= val_loss:
                 # torch.save(self.model.state_dict(), './results/' + self.model_name + '_best.pth')
                 torch.save(self.model.state_dict(),
-                           os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/2nd',
+                           os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd',
                                         self.model_name + '_best.pth'))
                 val_loss = val_cost
                 best_epoch = epoch
 
         # torch.save(self.model.state_dict(), './results/' + self.model_name + '_last.pth')
         torch.save(self.model.state_dict(),
-                   os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/2nd',
+                   os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd',
                                 self.model_name + '_last.pth'))
         print('Finished Training')
 
@@ -117,7 +117,8 @@ class SupervisedLearning():
 
         ###########################
 
-        self.model.load_state_dict(torch.load('./results/' + self.model_name + '_best.pth'))
+        self.model.load_state_dict(torch.load(os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd',
+                                        self.model_name + '_best.pth')))
         train_acc = eval(self.trainloader)
         val_acc = eval(self.valloader)
         print(f'Epoch {best_epoch}, Train Accuracy {train_acc}, Test Accuracy {val_acc}')
