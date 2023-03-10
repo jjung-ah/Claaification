@@ -16,4 +16,4 @@ mp:
   num_gpus: 1
 
 #output_dir: /mnt/hdd/datasets/ulsan3-crack-poc/6_tmp/4_results/1st_test
-output_dir: /mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/1st
+output_dir: /mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd

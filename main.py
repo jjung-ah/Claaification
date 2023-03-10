@@ -1,3 +1,4 @@
+# Coding by BAEK(01153450@hyundai-autoever.com)
 
 import os
 import torch
@@ -69,7 +70,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Image Classification')
     parser.add_argument('--batch_size', default=8, type=int, help='batch size')
-    parser.add_argument('--epoch', default=100, type=int, help='training epoch')
+    parser.add_argument('--epoch', default=300, type=int, help='training epoch')
     parser.add_argument('--lr', default=0.00001, type=float, help='learning rate')
     parser.add_argument('--l2', default=0.000001, type=float, help='weight decay')
     parser.add_argument('--model_name', default='resnet18', type=str, help='model name')

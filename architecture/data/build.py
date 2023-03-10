@@ -10,11 +10,6 @@ from .utils import load_yaml, get_all_items  #, get_label_items
 from .transforms.build import build_train_transforms, build_val_transforms
 
 
-
-# def collate_fn(batch):
-#     return tuple(zip(*batch))
-
-
 def build_dataloader(configs: Dictconfigs, train: bool):
     data_configs = configs.data
 
@@ -33,8 +28,6 @@ def build_dataloader(configs: Dictconfigs, train: bool):
         info = load_yaml(config_path=data_info)
         set_name = info['name']
         img_list = get_all_items(info['img_dir'], img_ext=info['img_ext'])
-        # gt_list = get_label_items(info['img_dir'])
-        # assert len(img_list) == len(gt_list)
 
         # 여기서 gt를 저장할지, dataset에서 gt를 부를지 고민
         for img_dir in img_list:
@@ -46,9 +39,6 @@ def build_dataloader(configs: Dictconfigs, train: bool):
 
     # (3) call datasets.
     datasets = GoroDataset(datasets_dict, transform=transform)
-    # factory_name = data_configs.datasets.factory_name
-    # datasets = DATASETS_REGISTRY.get(factory_name)(datasets_dict, transform=transform
-    # val_datasets = DATASETS_REGISTRY.get(factory_name)(datasets_dict, transform=val_transform)
 
     # (4) call data-loader.
     batch_size = configs.mode.solver.batch_train if train else configs.mode.solver.batch_val

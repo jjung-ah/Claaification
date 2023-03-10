@@ -1,3 +1,6 @@
+# Coding by BAEK(01153450@hyundai-autoever.com)
+
+import os
 import torch
 import torch.nn as nn
 # import torch.optim as optim
@@ -64,9 +67,7 @@ class SupervisedLearning():
             running_loss = 0.0
 
             for data in self.trainloader:
-                print(data)
-                # inputs, labels = data[0].to(self.device), data[1].to(self.device)
-                inputs, labels = data['img'].to(self.device), data['gt'].to(self.device)
+                inputs, labels = data[0].to(self.device), data[1].to(self.device)
                 optimizer.zero_grad()
                 outputs = self.model(inputs)
                 trainloss = self.criterion(outputs, labels)
@@ -92,14 +93,24 @@ class SupervisedLearning():
             val_loss_list.append(val_cost)
 
             if epoch % 10 == 0:
-                print(f'Epoch {epoch}, Train Loss: {train_cost}, Test Loss: {val_cost}')
+                print(f'Epoch {epoch}, Train Loss: {train_cost}, Validation Loss: {val_cost}')
+                if epoch != 0:
+                    torch.save(self.model.state_dict(),
+                               os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/2nd',
+                                            f'{self.model_name}_{epoch}.pth'))
 
             if val_cost <= val_loss:
-                torch.save(self.model.state_dict(), './results/' + self.model_name + '_best.pth')
+                # torch.save(self.model.state_dict(), './results/' + self.model_name + '_best.pth')
+                torch.save(self.model.state_dict(),
+                           os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/2nd',
+                                        self.model_name + '_best.pth'))
                 val_loss = val_cost
                 best_epoch = epoch
 
-        torch.save(self.model.state_dict(), './results/' + self.model_name + '_last.pth')
+        # torch.save(self.model.state_dict(), './results/' + self.model_name + '_last.pth')
+        torch.save(self.model.state_dict(),
+                   os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/2nd',
+                                self.model_name + '_last.pth'))
         print('Finished Training')
 
 
