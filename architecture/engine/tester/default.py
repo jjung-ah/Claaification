@@ -1,95 +1,94 @@
-# Coding by SUNN(01139138@hyundai-autoever.com)
-
-import gc
-import pytest
-import torch
-from utils.types import Dictconfigs
-from architecture.engine.test_loop import TesterBase
-from . import TESTER_REGISTRY
-
-from architecture.modeling.build import build_model
-from architecture.solver.build import build_criterion, build_optimizer
-from architecture.evaluation.build import build_evaluator
-from architecture.data.build import build_dataloader
-
-
-@TESTER_REGISTRY.register()
-class DefaultTester(TesterBase):
-    '''
-    Default-class for tester.
-    '''
-    def __init__(self, configs: Dictconfigs):
-        super(DefaultTester, self).__init__()
-
-        # build for trainer.
-        self.test_loader = self.build_dataloader(configs, train=False)
-
-        self.model = build_model(configs)
-        self.criterion = build_criterion(configs)
-        self.optimizer = build_optimizer(configs, self.model)
-
-    def before_test(self):
-        # todo : add checkpointer
-        pass
-
-    def before_step(self):
-        pass
-
-    def run_step(self):
-        self.model.eval()
-        test_loss = 0
-        correct = 0
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-        with torch.no_grad():
-            data, target = next(iter(self.test_loader))
-            data, target = data.to(device), target.to(device)
-            output = self.model(data)
-            test_loss += self.criterion()  # todo: change def
-            pred = output.argmax(dim=1, keepdim=True)
-            correct += pred.eq(target.view_as(pred)).sum().item()
-
-        test_loss /= len(self.test_loader.dataset)
-
-        print("\nTest set: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
-            test_loss, correct, len(self.test_loader.dataset), 100 * correct / len(self.test_loader.dataset)
-        ))
-
-
-
-    def after_step(self):
-        # todo : add save weights
-        # todo : add logger
-        pass
-
-    def after_test(self):
-        # todo : add logger
-        pass
-
-    @classmethod
-    def build_model(cls):
-        # It now calls :func: 'architecture.modeling.build_model'.
-        return build_model()
-
-    @classmethod
-    def build_criterion(cls):
-        # It now calls :func: 'architecture.solver.build_criterion'.
-        return build_criterion()
-
-    @classmethod
-    def build_optimizer(cls):
-        # It now calls :func: 'architecture.solver.build_optimizer'.
-        return build_optimizer()
-
-    @classmethod
-    def build_evaluator(cls):
-        # It now calls :func: 'architecture.evaluation.build_evaluator'.
-        return build_evaluator()
-
-    @classmethod
-    def build_dataloader(cls, configs: Dictconfigs, train: bool):
-        # It now calls :func: 'architecture.data.build_dataloader'.
-        return build_dataloader(configs, train)
+# # Coding by SUNN(01139138@hyundai-autoever.com)
+#
+# import gc
+# import torch
+# from utils.types import Dictconfigs
+# from architecture.engine.test_loop import TesterBase
+# from . import TESTER_REGISTRY
+#
+# from architecture.modeling.build import build_model
+# from architecture.solver.build import build_criterion, build_optimizer
+# from architecture.evaluation.build import build_evaluator
+# from architecture.data.build import build_dataloader
+#
+#
+# @TESTER_REGISTRY.register()
+# class DefaultTester(TesterBase):
+#     '''
+#     Default-class for tester.
+#     '''
+#     def __init__(self, configs: Dictconfigs):
+#         super(DefaultTester, self).__init__()
+#
+#         # build for trainer.
+#         self.test_loader = self.build_dataloader(configs, train=False)
+#
+#         self.model = build_model(configs)
+#         self.criterion = build_criterion(configs)
+#         self.optimizer = build_optimizer(configs, self.model)
+#
+#     def before_test(self):
+#         # todo : add checkpointer
+#         pass
+#
+#     def before_step(self):
+#         pass
+#
+#     def run_step(self):
+#         self.model.eval()
+#         test_loss = 0
+#         correct = 0
+#         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#
+#         with torch.no_grad():
+#             data, target = next(iter(self.test_loader))
+#             data, target = data.to(device), target.to(device)
+#             output = self.model(data)
+#             test_loss += self.criterion()  # todo: change def
+#             pred = output.argmax(dim=1, keepdim=True)
+#             correct += pred.eq(target.view_as(pred)).sum().item()
+#
+#         test_loss /= len(self.test_loader.dataset)
+#
+#         print("\nTest set: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
+#             test_loss, correct, len(self.test_loader.dataset), 100 * correct / len(self.test_loader.dataset)
+#         ))
+#
+#
+#
+#     def after_step(self):
+#         # todo : add save weights
+#         # todo : add logger
+#         pass
+#
+#     def after_test(self):
+#         # todo : add logger
+#         pass
+#
+#     @classmethod
+#     def build_model(cls):
+#         # It now calls :func: 'architecture.modeling.build_model'.
+#         return build_model()
+#
+#     @classmethod
+#     def build_criterion(cls):
+#         # It now calls :func: 'architecture.solver.build_criterion'.
+#         return build_criterion()
+#
+#     @classmethod
+#     def build_optimizer(cls):
+#         # It now calls :func: 'architecture.solver.build_optimizer'.
+#         return build_optimizer()
+#
+#     @classmethod
+#     def build_evaluator(cls):
+#         # It now calls :func: 'architecture.evaluation.build_evaluator'.
+#         return build_evaluator()
+#
+#     @classmethod
+#     def build_dataloader(cls, configs: Dictconfigs, train: bool):
+#         # It now calls :func: 'architecture.data.build_dataloader'.
+#         return build_dataloader(configs, train)
 
 
 

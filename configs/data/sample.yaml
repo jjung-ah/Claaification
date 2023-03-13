@@ -4,6 +4,8 @@ datasets:
     - /workspace/jjung/classification-model-v1/configs/data/datasets/data_01.yaml
   val:
     - /workspace/jjung/classification-model-v1/configs/data/datasets/data_03.yaml
+  test:
+    - /workspace/jjung/classification-model-v1/configs/data/datasets/data_02.yaml
 
 transforms:
   GOSResize:

@@ -30,7 +30,7 @@ class SupervisedLearning():
         self.criterion = nn.CrossEntropyLoss()
 
 
-    def eval(self, dataloader):
+    def val(self, dataloader):
 
         correct = 0
         total = 0
@@ -96,31 +96,31 @@ class SupervisedLearning():
                 print(f'Epoch {epoch}, Train Loss: {train_cost}, Validation Loss: {val_cost}')
                 if epoch != 0:
                     torch.save(self.model.state_dict(),
-                               os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd',
+                               os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/4th',
                                             f'{self.model_name}_{epoch}.pth'))
 
             if val_cost <= val_loss:
                 # torch.save(self.model.state_dict(), './results/' + self.model_name + '_best.pth')
                 torch.save(self.model.state_dict(),
-                           os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd',
-                                        self.model_name + '_best.pth'))
+                           os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/4th',
+                                        f'{self.model_name}_{epoch}_best.pth'))
                 val_loss = val_cost
                 best_epoch = epoch
 
         # torch.save(self.model.state_dict(), './results/' + self.model_name + '_last.pth')
         torch.save(self.model.state_dict(),
-                   os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd',
-                                self.model_name + '_last.pth'))
+                   os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/4th',
+                                f'{self.model_name}_{epoch}_last.pth'))
         print('Finished Training')
 
 
 
         ###########################
 
-        self.model.load_state_dict(torch.load(os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/3rd',
-                                        self.model_name + '_best.pth')))
-        train_acc = eval(self.trainloader)
-        val_acc = eval(self.valloader)
+        self.model.load_state_dict(torch.load(os.path.join('/mnt/hdd1/datasets/hyundai-steel-goro/datasets/04_results/4th',
+                                        f'{self.model_name}_{epoch}_best.pth')))
+        train_acc = SupervisedLearning.val(self.trainloader)
+        val_acc = SupervisedLearning.val(self.valloader)
         print(f'Epoch {best_epoch}, Train Accuracy {train_acc}, Test Accuracy {val_acc}')
 
 

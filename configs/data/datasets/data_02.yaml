@@ -1,5 +1,5 @@
 name: data_02
-img_dir: /Users/sunn/Documents/data/dis/data_02/img
+img_dir: /mnt/hdd1/datasets/hyundai-steel-goro/datasets/02_inspected_datasets/test
 img_ext:
   - jpg
   - png

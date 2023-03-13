@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 
 class BasicBlock(nn.Module):
-    expansion = 1
+    expansion = 1  #
 
     def __init__(self, in_planes, planes, stride=1):
         super(BasicBlock, self).__init__()
@@ -32,7 +32,7 @@ class BasicBlock(nn.Module):
 
 
 class Bottleneck(nn.Module):
-    expansion = 4
+    expansion = 4  # 블록 내에서 차원을 증가시키는 3번째 conv layer에서의 확장 계수
 
     def __init__(self, in_planes, planes, stride=1):
         super(Bottleneck, self).__init__()

@@ -71,10 +71,10 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Image Classification')
     parser.add_argument('--batch_size', default=8, type=int, help='batch size')
-    parser.add_argument('--epoch', default=300, type=int, help='training epoch')
+    parser.add_argument('--epoch', default=500, type=int, help='training epoch')
     parser.add_argument('--lr', default=0.00001, type=float, help='learning rate')
     parser.add_argument('--l2', default=0.000001, type=float, help='weight decay')
-    parser.add_argument('--model_name', default='resnet18', type=str, help='model name')
+    parser.add_argument("--model_name", default='resnet50', type=str, help='model name')
     parser.add_argument('--pretrained', default=None, type=str, help='model path')
     parser.add_argument('--train', default='train', type=str, help='train and eval')
     args = parser.parse_args()

@@ -51,8 +51,8 @@ class GoroDataset(object):
         if self.transform:
             # img = torch.tensor(img).squeeze()
             # img = torch.tensor(img).squeeze().requires_grad_(True)
-            img = torch.tensor(img)
-            img = img.clone().detach().requires_grad_(True)
+            img = torch.tensor(img).clone().detach().requires_grad_(True)
+            # img = img.clone().detach().requires_grad_(True)
             img = self.transform(img)
         # data.update(img=img, gt=gt)
         return img, gt  # data
