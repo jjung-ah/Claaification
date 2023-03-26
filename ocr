@@ -129,7 +129,10 @@ class TextDetector(object):
             dt_boxes_new.append(box)
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
-        
+    
+    
+    
+    ###############
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
     '''
     _bitmap: single map with shape (1, H, W),
@@ -243,6 +246,73 @@ class TextDetector(object):
 
         return boxes_batch
         
+        
+            def get_mini_boxes(self, contour):
+        bounding_box = cv2.minAreaRect(contour)
+        points = sorted(list(cv2.boxPoints(bounding_box)), key=lambda x: x[0])
+
+        index_1, index_2, index_3, index_4 = 0, 1, 2, 3
+        if points[1][1] > points[0][1]:
+            index_1 = 0
+            index_4 = 1
+        else:
+            index_1 = 1
+            index_4 = 0
+        if points[3][1] > points[2][1]:
+            index_2 = 2
+            index_3 = 3
+        else:
+            index_2 = 3
+            index_3 = 2
+
+        box = [
+            points[index_1], points[index_2], points[index_3], points[index_4]
+        ]
+        return box, min(bounding_box[1])
+
+    def box_score_fast(self, bitmap, _box):
+        '''
+        box_score_fast: use bbox mean score as the mean score
+        '''
+        h, w = bitmap.shape[:2]
+        box = _box.copy()
+        xmin = np.clip(np.floor(box[:, 0].min()).astype("int32"), 0, w - 1)
+        xmax = np.clip(np.ceil(box[:, 0].max()).astype("int32"), 0, w - 1)
+        ymin = np.clip(np.floor(box[:, 1].min()).astype("int32"), 0, h - 1)
+        ymax = np.clip(np.ceil(box[:, 1].max()).astype("int32"), 0, h - 1)
+
+        mask = np.zeros((ymax - ymin + 1, xmax - xmin + 1), dtype=np.uint8)
+        box[:, 0] = box[:, 0] - xmin
+        box[:, 1] = box[:, 1] - ymin
+        cv2.fillPoly(mask, box.reshape(1, -1, 2).astype("int32"), 1)
+        return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
+
+    def box_score_slow(self, bitmap, contour):
+        '''
+        box_score_slow: use polyon mean score as the mean score
+        '''
+        h, w = bitmap.shape[:2]
+        contour = contour.copy()
+        contour = np.reshape(contour, (-1, 2))
+
+        xmin = np.clip(np.min(contour[:, 0]), 0, w - 1)
+        xmax = np.clip(np.max(contour[:, 0]), 0, w - 1)
+        ymin = np.clip(np.min(contour[:, 1]), 0, h - 1)
+        ymax = np.clip(np.max(contour[:, 1]), 0, h - 1)
+
+        mask = np.zeros((ymax - ymin + 1, xmax - xmin + 1), dtype=np.uint8)
+
+        contour[:, 0] = contour[:, 0] - xmin
+        contour[:, 1] = contour[:, 1] - ymin
+
+        cv2.fillPoly(mask, contour.reshape(1, -1, 2).astype("int32"), 1)
+        return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
+        
+        
+        
+        
+        
+        
         #########
         
         dt_boxes = post_result[0]['points']
@@ -270,7 +340,10 @@ class TextDetector(object):
         for rec_result in post_result:
             logger.info('\t result: {}'.format(rec_result))
     '''
-
+    
+    
+    
+    
 
 if __name__ == "__main__":
     args = utility.parse_args()
